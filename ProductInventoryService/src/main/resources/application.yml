@@ -1,0 +1,14 @@
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ERA_Commerce
+    username: root
+    password: Reinamimi
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
