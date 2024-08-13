@@ -45,4 +45,24 @@ public class ProductService {
         productRepository.save(product);
         return true;
     }
+
+    public List<Product> getProductsLowStock() {
+            int lowStockValue = 30;
+            return productRepository.findByStockLessThanEqual(lowStockValue);
+    }
+
+    public Product updateProduct(Long productId, Product product) {
+        Product existingProduct = productRepository.findById(productId).orElse(null);
+        if(existingProduct == null) {
+            return null;
+        }
+        else{
+            existingProduct.setStock(product.getStock());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setName(product.getName());
+            existingProduct.setPrice(product.getPrice());
+            productRepository.save(existingProduct);
+        }
+        return existingProduct;
+    }
 }
