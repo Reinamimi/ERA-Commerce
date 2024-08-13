@@ -21,8 +21,8 @@ public class OrderServiceSecurityConfig {
         httpSecurity.csrf().disable()
                 .authenticationProvider(userServiceAuthenticationProvider)
                 .authorizeRequests()
-                    .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-                    .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+                    .requestMatchers("swagger-ui/index.html#/").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin();
         return httpSecurity.build();

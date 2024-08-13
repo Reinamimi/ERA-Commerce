@@ -25,7 +25,7 @@ public class ProductServiceClient {
 
     public void updateProductInventory(Orders order, boolean isDeduction) {
         String url = productUrl.replace("{productId}", order.getProductId().toString())
-                + "?quantity=" + order.getQuantity() + "&isDeduction=" + isDeduction;
+                + "/restock" + "?quantity=" + order.getQuantity() + "&isDeduction=" + isDeduction;
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(

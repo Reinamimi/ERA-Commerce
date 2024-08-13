@@ -39,7 +39,7 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/orders")
     public ResponseEntity<String> addOrder(@RequestBody OrderDTO orderDTO) {
         log.info("Add order: {}", orderDTO);
         boolean flag = orderService.addOrder(orderDTO);
