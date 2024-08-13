@@ -37,7 +37,7 @@ public class ProductController {
         return new ResponseEntity<>("Product Not found!", HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{productId}")
+    @PutMapping("/{productId}/restock")
     public ResponseEntity<String> updateProductInventory(@PathVariable Long productId,
                                                          @RequestParam Integer quantity,
                                                          @RequestParam Boolean isDeduction) {
@@ -47,4 +47,20 @@ public class ProductController {
         }
         return new ResponseEntity<>("Product updated successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/lowstock")
+    public ResponseEntity<List<Product>> getProductLowStock() {
+        return new ResponseEntity<>(productService.getProductsLowStock(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long productId,
+                                                @RequestBody Product product) {
+        Product updatedProduct = productService.updateProduct(productId, product);
+        if (updatedProduct==null) {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("Product updated!",HttpStatus.NO_CONTENT);
+    }
+
 }
