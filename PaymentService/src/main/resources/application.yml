@@ -1,14 +1,29 @@
-
 server:
-  port: 8083
+  port: 8081
+
+#spring:
+#  datasource:
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ERA_Commerce
+#    username: root
+#    password: Reinamimi
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    show-sql: true
+
 
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ERA_Commerce
     username: root
-    password: Reinamimi
+    password: emma12345
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
+
+
+orderService:
+  orderUrl: http://localhost:8082/orders
