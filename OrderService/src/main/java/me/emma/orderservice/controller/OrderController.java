@@ -8,25 +8,28 @@ import me.emma.orderservice.pojo.entity.Orders;
 import me.emma.orderservice.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping()
 @AllArgsConstructor
 @Slf4j
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping
+    @GetMapping("/admin/orders")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Orders>> getOrders() {
         log.info("Get orders");
         return new ResponseEntity<>(orderService.getOrders(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/orders/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getOrderById(@PathVariable Long id) {
         log.info("Get order by ID {}", id);
         Orders order = orderService.getOrderById(id);
@@ -47,7 +50,8 @@ public class OrderController {
         return new ResponseEntity<>("Failed to create a order", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/orders/{userId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getOrderByUserId(@PathVariable Long userId) {
         log.info("Get orders by userId: {}", userId);
         Optional<List<Orders>> orders = orderService.getOrderByUserId(userId);
@@ -57,7 +61,7 @@ public class OrderController {
         return new ResponseEntity<>(orders.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/{orderId}")
+    @PutMapping("/orders/{orderId}")
     public ResponseEntity<String> updateOrderStatus(@PathVariable Long orderId, @RequestParam Status status) {
         log.info("Update order status: {}", orderId);
         boolean flag = orderService.updateOrderStatus(orderId, status);

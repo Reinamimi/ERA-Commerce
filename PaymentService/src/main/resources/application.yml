@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8083
 
 #spring:
 #  datasource:
@@ -27,3 +27,6 @@ spring:
 
 orderService:
   orderUrl: http://localhost:8082/orders
+
+userService:
+  userUrl: http://localhost:8081

@@ -28,5 +28,6 @@ spring:
 productInventoryService:
   productUrl: http://localhost:8080/product/{productId}
 
-paymentService:
-  paymentUrl: http://localhost:8081/payment
+
+userService:
+  userUrl: http://localhost:8081

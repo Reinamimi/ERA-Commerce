@@ -6,6 +6,7 @@ import me.emma.paymentservice.pojo.entity.Payment;
 import me.emma.paymentservice.service.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,7 @@ public class PaymentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getPaymentByOrderId(@RequestParam("orderId") Long orderId) {
         Payment payment = paymentService.getPaymentByOrderId(orderId);
         if (payment == null) {
