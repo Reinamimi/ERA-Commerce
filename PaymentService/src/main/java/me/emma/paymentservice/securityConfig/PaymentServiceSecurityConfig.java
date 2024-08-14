@@ -20,8 +20,10 @@ public class PaymentServiceSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authenticationProvider(userServiceAuthenticationProvider)
+
                 .authorizeRequests()
-                .requestMatchers("/payment/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers("swagger-ui/index.html#/").permitAll()
+                .requestMatchers("/payment/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin();

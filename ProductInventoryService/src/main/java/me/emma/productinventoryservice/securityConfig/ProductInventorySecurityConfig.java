@@ -1,6 +1,6 @@
-package me.emma.orderservice.sercurityConfig;
+package me.emma.productinventoryservice.securityConfig;
 
-import me.emma.orderservice.serviceClient.UserServiceAuthenticationProvider;
+import me.emma.productinventoryservice.serviceClient.UserServiceAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class OrderServiceSecurityConfig {
+public class ProductInventorySecurityConfig {
+
     @Autowired
     private UserServiceAuthenticationProvider userServiceAuthenticationProvider;
 
@@ -21,8 +22,7 @@ public class OrderServiceSecurityConfig {
         httpSecurity.csrf().disable()
                 .authenticationProvider(userServiceAuthenticationProvider)
                 .authorizeRequests()
-                    .requestMatchers("swagger-ui/index.html#/").permitAll()
-                    .requestMatchers("/admin/**").authenticated()
+                .requestMatchers("swagger-ui/index.html#/").permitAll()
                 .and()
                 .formLogin();
         return httpSecurity.build();

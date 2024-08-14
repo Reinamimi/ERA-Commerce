@@ -1,4 +1,4 @@
-package me.emma.paymentservice.pojo.dto;
+package me.emma.productinventoryservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

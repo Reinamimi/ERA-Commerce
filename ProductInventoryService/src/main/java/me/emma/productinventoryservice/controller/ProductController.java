@@ -6,6 +6,7 @@ import me.emma.productinventoryservice.entity.Product;
 import me.emma.productinventoryservice.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,17 +20,20 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<Product>> getProducts() {
         return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id) {
+        log.info("reaching product inventory");
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
             return new ResponseEntity<>(product.get(), HttpStatus.OK);
@@ -54,6 +58,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> updateProduct(@PathVariable Long productId,
                                                 @RequestBody Product product) {
         Product updatedProduct = productService.updateProduct(productId, product);

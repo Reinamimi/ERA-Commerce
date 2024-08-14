@@ -39,7 +39,7 @@ public class ApplicationSecurityConfig {
 
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/","addUser").permitAll()
+                .requestMatchers("/","addUser","authenticate").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**", "/admin/**").authenticated()

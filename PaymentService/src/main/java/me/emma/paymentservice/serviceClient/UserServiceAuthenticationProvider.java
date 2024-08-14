@@ -2,6 +2,7 @@ package me.emma.paymentservice.serviceClient;
 
 import lombok.extern.slf4j.Slf4j;
 import me.emma.paymentservice.pojo.dto.AuthRequest;
+import me.emma.paymentservice.pojo.dto.AuthenticateDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -28,19 +34,36 @@ public class UserServiceAuthenticationProvider implements AuthenticationProvider
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
+        log.info("Authenticating user {}", authentication);
+        String username = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
+        log.info(username);
+        log.info("Authorize is being called");
 
-        ResponseEntity<UserDetails> response = restTemplate.postForEntity(
+        AuthRequest authRequest = new AuthRequest(username, password);
+
+        // Make the request to authenticate
+        ResponseEntity<AuthenticateDTO> responseEntity = restTemplate.postForEntity(
                 userUrl + "/authenticate",
-                new AuthRequest(username, password),
-                UserDetails.class
+                authRequest,
+                AuthenticateDTO.class
         );
 
-        if (response.getStatusCode() == HttpStatus.OK) {
-            UserDetails userDetails = response.getBody();
+        AuthenticateDTO response = responseEntity.getBody();
+        log.info(String.valueOf(response));
+        // Check the response
+        if (response != null && response.getUserName() != null) {
+            // Create a list of granted authorities based on roles
+            List<GrantedAuthority> authorities = response.getRoles().stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+
+            // Create and return the UsernamePasswordAuthenticationToken
             return new UsernamePasswordAuthenticationToken(
-                    username, password, userDetails.getAuthorities());
+                    username,
+                    password,
+                    authorities
+            );
         } else {
             throw new BadCredentialsException("Invalid credentials");
         }

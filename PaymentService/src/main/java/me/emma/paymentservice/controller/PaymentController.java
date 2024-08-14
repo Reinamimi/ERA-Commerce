@@ -16,6 +16,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<String> createPayment(@RequestParam Long orderId) {
         Payment payment = paymentService.getPaymentByOrderId(orderId);
         if (payment == null) {

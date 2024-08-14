@@ -29,7 +29,6 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getOrderById(@PathVariable Long id) {
         log.info("Get order by ID {}", id);
         Orders order = orderService.getOrderById(id);
@@ -40,6 +39,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<String> addOrder(@RequestBody OrderDTO orderDTO) {
         log.info("Add order: {}", orderDTO);
         boolean flag = orderService.addOrder(orderDTO);
@@ -50,7 +50,7 @@ public class OrderController {
         return new ResponseEntity<>("Failed to create a order", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/orders/{userId}")
+    @GetMapping("/orders/user/{userId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Object> getOrderByUserId(@PathVariable Long userId) {
         log.info("Get orders by userId: {}", userId);

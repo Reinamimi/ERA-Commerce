@@ -1,13 +1,10 @@
-package me.emma.orderservice.serviceClient;
+package me.emma.productinventoryservice.serviceClient;
 
 import lombok.extern.slf4j.Slf4j;
-import me.emma.orderservice.pojo.dto.AuthRequest;
-import me.emma.orderservice.pojo.dto.AuthenticateDTO;
-import me.emma.orderservice.pojo.dto.UserDTO;
+import me.emma.productinventoryservice.dto.AuthRequest;
+import me.emma.productinventoryservice.dto.AuthenticateDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -17,13 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
